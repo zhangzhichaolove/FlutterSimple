@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './pages/HomePageWidget.dart';
+import './pages/ListViewPage.dart';
 
 void main() => runApp(new MyApp());
 
@@ -29,7 +30,8 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   void initState() {
-    pages..add(HomePageWidget())..add(HomePageWidget())..add(HomePageWidget());
+    super.initState();
+    pages..add(HomePageWidget())..add(ListViewPage())..add(HomePageWidget());
   }
 
   @override
