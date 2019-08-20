@@ -1,3 +1,4 @@
+import 'package:firstflutter/net/HttpController.dart';
 import 'package:flutter/material.dart';
 
 //void main() {
@@ -31,17 +32,25 @@ class MyState extends State {
     for (int i = 0; i < 10; i++) {
       entityList.add(ItemEntity("Item  $i", Icons.add_location));
     }
+    Map map = new Map<String, String>();
+    map["page"] = "1";
+    map["count"] = "5";
+    HttpController.post(
+        "https://api.apiopen.top/getJoke", (data) => {print(data)},
+        params: map);
   }
 
   Future<Null> _getMoreData() async {
-    await Future.delayed(Duration(seconds: 2), () { //模拟延时操作
+    await Future.delayed(Duration(seconds: 2), () {
+      //模拟延时操作
       if (!isLoadData) {
         isLoadData = true;
         setState(() {
           isLoadData = false;
-          List<ItemEntity> newList = List.generate(5, (index) =>
-          new ItemEntity(
-              "上拉加载--item ${index + entityList.length}", Icons.ac_unit));
+          List<ItemEntity> newList = List.generate(
+              5,
+              (index) => new ItemEntity(
+                  "上拉加载--item ${index + entityList.length}", Icons.ac_unit));
           entityList.addAll(newList);
         });
       }
@@ -50,12 +59,14 @@ class MyState extends State {
 
   Future<Null> _handleRefresh() async {
     print('-------开始刷新------------');
-    await Future.delayed(Duration(seconds: 2), () { //模拟延时
+    await Future.delayed(Duration(seconds: 2), () {
+      //模拟延时
       setState(() {
         entityList.clear();
-        entityList = List.generate(5,
-                (index) =>
-            new ItemEntity("下拉刷新后--item $index", Icons.bluetooth_audio));
+        entityList = List.generate(
+            8,
+            (index) =>
+                new ItemEntity("下拉刷新后--item $index", Icons.bluetooth_audio));
         return null;
       });
     });
@@ -130,16 +141,21 @@ class ItemView extends StatelessWidget {
 class LoadMoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Center(
-        child: Row(children: <Widget>[
-          new CircularProgressIndicator(),
-          Padding(padding: EdgeInsets.all(10)),
-          Text('加载中...')
-        ], mainAxisAlignment: MainAxisAlignment.center,),
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Center(
+          child: Row(
+            children: <Widget>[
+              new CircularProgressIndicator(),
+              Padding(padding: EdgeInsets.all(10)),
+              Text('加载中...')
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
       ),
-    ), color: Colors.white70,);
+      color: Colors.white70,
+    );
   }
-
 }
